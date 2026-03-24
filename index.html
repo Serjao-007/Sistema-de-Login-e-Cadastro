@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <div class="login">
+            <form class="Form-usuario">
+                <h2>Bem-vindo(a)</h2>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Digite seu email" required>
+                </div>
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="Digite sua senha" required>
+                </div>
+                <button id="botao" type="submit">Entrar</button>
+            </form>
+        </div>
+    </main>
+    <script>
+        document.getElementById("botao").addEventListener('click', async function(event) {
+            event.preventDefault(); 
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            try {
+                const resposta = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, senha: senha })
+                });
+                const dados = await resposta.json();
+                if (dados.sucesso) {
+                    alert("Login concluído com sucesso!");
+                } else {
+                    alert("Email ou senha incorretos.");
+                }
+            } catch (erro) {
+                alert("Erro ao conectar com o servidor. O 'node server.js' está rodando?");
+            }
+        });
+    </script>
+</body>
+</html>
